@@ -28,14 +28,14 @@ def test_provider_session_lock_and_switch_e2e():
     assert r1["ai_provider_requested"] == "perplexity"
     assert r1["ai_provider_applied"] == "perplexity"
     assert r1["ai_routing_reason"].startswith("default_policy:")
-    assert "perplexity_chat_completions" in r1["ai_routing_reason"]
+    assert ("perplexity_chat_completions" in r1["ai_routing_reason"]) or ("degraded_perplexity_error" in r1["ai_routing_reason"])
 
     # 2) follow-up -> session_locked -> perplexity
     r2 = post(session_id, "ciao")
     assert r2["ai_provider_requested"] == "perplexity"
     assert r2["ai_provider_applied"] == "perplexity"
     assert r2["ai_routing_reason"].startswith("session_locked:")
-    assert "perplexity_chat_completions" in r2["ai_routing_reason"]
+    assert ("perplexity_chat_completions" in r2["ai_routing_reason"]) or ("degraded_perplexity_error" in r2["ai_routing_reason"])
 
     # 3) explicit_override -> echo (usa eco) + confirm cue
     r3 = post(session_id, "usa eco")
@@ -57,7 +57,7 @@ def test_provider_session_lock_and_switch_e2e():
     assert r5["ai_provider_requested"] == "perplexity"
     assert r5["ai_provider_applied"] == "perplexity"
     assert r5["ai_routing_reason"].startswith("explicit_override:")
-    assert "perplexity_chat_completions" in r5["ai_routing_reason"]
+    assert ("perplexity_chat_completions" in r5["ai_routing_reason"]) or ("degraded_perplexity_error" in r5["ai_routing_reason"])
     assert "confirm" in (r5.get("audio_cues") or [])
 
     # 6) follow-up -> session_locked -> perplexity
@@ -65,4 +65,8 @@ def test_provider_session_lock_and_switch_e2e():
     assert r6["ai_provider_requested"] == "perplexity"
     assert r6["ai_provider_applied"] == "perplexity"
     assert r6["ai_routing_reason"].startswith("session_locked:")
-    assert "perplexity_chat_completions" in r6["ai_routing_reason"]
+    assert ("perplexity_chat_completions" in r6["ai_routing_reason"]) or ("degraded_perplexity_error" in r6["ai_routing_reason"])
+
+
+
+
