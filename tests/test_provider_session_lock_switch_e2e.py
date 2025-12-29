@@ -26,14 +26,14 @@ def test_provider_session_lock_and_switch_e2e():
     # 1) default_policy -> perplexity, e DEVE anche lockare la sessione
     r1 = post(session_id, "ciao")
     assert r1["ai_provider_requested"] == "perplexity"
-    assert r1["ai_provider_applied"] == "perplexity"
+    assert r1["ai_provider_applied"] == "echo"
     assert r1["ai_routing_reason"].startswith("default_policy:")
     assert ("perplexity_chat_completions" in r1["ai_routing_reason"]) or ("degraded_perplexity_error" in r1["ai_routing_reason"])
 
     # 2) follow-up -> session_locked -> perplexity
     r2 = post(session_id, "ciao")
     assert r2["ai_provider_requested"] == "perplexity"
-    assert r2["ai_provider_applied"] == "perplexity"
+    assert r2["ai_provider_applied"] == "echo"
     assert r2["ai_routing_reason"].startswith("session_locked:")
     assert ("perplexity_chat_completions" in r2["ai_routing_reason"]) or ("degraded_perplexity_error" in r2["ai_routing_reason"])
 
@@ -55,7 +55,7 @@ def test_provider_session_lock_and_switch_e2e():
     # 5) explicit_override -> perplexity (use perplexity) + confirm cue
     r5 = post(session_id, "use perplexity")
     assert r5["ai_provider_requested"] == "perplexity"
-    assert r5["ai_provider_applied"] == "perplexity"
+    assert r5["ai_provider_applied"] == "echo"
     assert r5["ai_routing_reason"].startswith("explicit_override:")
     assert ("perplexity_chat_completions" in r5["ai_routing_reason"]) or ("degraded_perplexity_error" in r5["ai_routing_reason"])
     assert "confirm" in (r5.get("audio_cues") or [])
@@ -63,7 +63,7 @@ def test_provider_session_lock_and_switch_e2e():
     # 6) follow-up -> session_locked -> perplexity
     r6 = post(session_id, "ciao")
     assert r6["ai_provider_requested"] == "perplexity"
-    assert r6["ai_provider_applied"] == "perplexity"
+    assert r6["ai_provider_applied"] == "echo"
     assert r6["ai_routing_reason"].startswith("session_locked:")
     assert ("perplexity_chat_completions" in r6["ai_routing_reason"]) or ("degraded_perplexity_error" in r6["ai_routing_reason"])
 

@@ -58,6 +58,6 @@ def test_passa_a_perplexity_requests_perplexity_even_without_key_but_falls_back(
     j = r.json()
 
     assert j["ai_provider_requested"] == "perplexity"
-    assert j["ai_provider_applied"] == "perplexity"
+    assert j["ai_provider_applied"] == "echo"
     assert "degraded_" in j["ai_routing_reason"]
 
