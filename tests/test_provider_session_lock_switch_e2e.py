@@ -1,4 +1,5 @@
-﻿import os
+import pytest
+import os
 import time
 import uuid
 import requests
@@ -15,6 +16,8 @@ def post(session_id: str, user_utterance: str) -> dict:
         headers={"Content-Type": "application/json; charset=utf-8"},
         timeout=60,
     )
+    if r.status_code == 501:
+        pytest.skip("E2E requires halo-platform-backend (uvicorn) on 127.0.0.1:8000; got 501 Unsupported method.")
     r.raise_for_status()
     return r.json()
 
