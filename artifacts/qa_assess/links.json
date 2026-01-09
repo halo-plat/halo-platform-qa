@@ -1,24 +1,10 @@
 {
   "reports": [
-    {
-      "label": "Security assessment (markdown)",
-      "href": "security_assessment.md"
-    },
-    {
-      "label": "Privacy assessment (markdown)",
-      "href": "privacy_assessment.md"
-    },
-    {
-      "label": "pip-audit (json)",
-      "href": "pip_audit.json"
-    },
-    {
-      "label": "bandit (json)",
-      "href": "bandit.json"
-    },
-    {
-      "label": "detect-secrets (json)",
-      "href": "detect_secrets.json"
-    }
+    { "label": "Security assessment (markdown)", "href": "security-assessment.md" },
+    { "label": "Privacy assessment (markdown)", "href": "privacy-assessment.md" },
+    { "label": "pip-audit (json)", "href": "pip_audit.clean.json" },
+    { "label": "pip-audit (summary)", "href": "pip_audit.summary.txt" },
+    { "label": "bandit (json)", "href": "bandit.json" },
+    { "label": "detect-secrets (json)", "href": "detect_secrets.json" }
   ]
 }
