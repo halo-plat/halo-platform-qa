@@ -9,7 +9,7 @@
 - OWASP ASVS / OWASP API Security Top 10  application-layer expectations (high-level)
 
 ## Evidence inventory (audit trail)
-- pip-audit (SCA): artifacts/pip_audit.json
+- pip-audit (SCA): artifacts/pip_audit.clean.json (machine) + artifacts/pip_audit.summary.txt (human)
 - bandit (SAST): artifacts/bandit.json
 - detect-secrets: artifacts/detect_secrets.json
 
