@@ -8,3 +8,6 @@ artifacts/qa_assess/pip_audit.json
 
 # built artifacts
 artifacts/*.zip
+
+# local CI downloads
+artifacts/ci_download/
