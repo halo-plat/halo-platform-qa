@@ -1,0 +1,10 @@
+pytest>=8.0.0
+pytest-html>=4.1.1
+pytest-json-report>=1.5.0
+requests>=2.31.0
+cryptography>=46.0.0
+
+# security assessment toolchain (best-effort; se non eseguibile -> report "not executed")
+pip-audit>=2.7.0
+bandit>=1.7.8
+detect-secrets>=1.5.0
