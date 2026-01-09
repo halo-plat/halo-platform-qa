@@ -2,3 +2,6 @@
 __pycache__/
 *.pyc
 .venv/
+
+# QA assess raw outputs (non-JSON mix)
+artifacts/qa_assess/pip_audit.json
