@@ -5,3 +5,6 @@ __pycache__/
 
 # QA assess raw outputs (non-JSON mix)
 artifacts/qa_assess/pip_audit.json
+
+# built artifacts
+artifacts/*.zip
