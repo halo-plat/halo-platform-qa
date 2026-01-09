@@ -66,6 +66,15 @@ jobs:
           }
           '@ | Set-Content "artifacts\qa_assess\links.json"
 
+      - name: Generate manifest (sha256)
+        shell: pwsh
+        run: |
+          $dir = "artifacts\qa_assess"
+          Get-ChildItem $dir -File | Sort-Object Name | ForEach-Object {
+            $h = (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower()
+            "$h *$($_.Name)"
+          } | Set-Content "$dir\manifest.sha256"
+
       - name: Upload evidence pack
         uses: actions/upload-artifact@v4
         with:
