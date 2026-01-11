@@ -11,3 +11,5 @@ artifacts/*.zip
 
 # local CI downloads
 artifacts/ci_download/
+artifacts/
+templates/
