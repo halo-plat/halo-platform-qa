@@ -1,9 +1,9 @@
-param(
+﻿param(
   [ValidateSet("start","stop","status")]
   [string]$Action = "status",
 
   [string]$IntegrationRepo = "D:\HaloProject\repos\core\halo-platform-integration",
-  [string]$Host = "127.0.0.1",
+  [Alias("Host")][string]$BindHost = "127.0.0.1",
   [int]$Port = 8080,
 
   [string]$PythonExe = "python"
@@ -16,8 +16,8 @@ $pidFile = Join-Path $repo "artifacts\gateway_stub.pid"
 $logOut  = Join-Path $repo "artifacts\gateway_stub.out.log"
 $logErr  = Join-Path $repo "artifacts\gateway_stub.err.log"
 
-function Is-Running([int]$Pid) {
-  try { Get-Process -Id $Pid -ErrorAction Stop | Out-Null; return $true } catch { return $false }
+function Is-Running([int]$gwPid) {
+  try { Get-Process -Id $gwPid -ErrorAction Stop | Out-Null; return $true } catch { return $false }
 }
 
 function Wait-Health([string]$BaseUrl, [int]$Seconds=10) {
@@ -32,13 +32,13 @@ function Wait-Health([string]$BaseUrl, [int]$Seconds=10) {
   return $false
 }
 
-$baseUrl = "http://$Host`:$Port"
+$baseUrl = "http://$BindHost`:$Port"
 
 if ($Action -eq "status") {
   if (Test-Path $pidFile) {
-    $pid = [int](Get-Content $pidFile -Raw)
-    if (Is-Running $pid) {
-      Write-Host "GATEWAY_STUB_STATUS=RUNNING PID=$pid URL=$baseUrl"
+    $gwPid = [int](Get-Content $pidFile -Raw)
+    if (Is-Running $gwPid) {
+      Write-Host "GATEWAY_STUB_STATUS=RUNNING PID=$gwPid URL=$baseUrl"
       exit 0
     }
   }
@@ -48,9 +48,9 @@ if ($Action -eq "status") {
 
 if ($Action -eq "stop") {
   if (Test-Path $pidFile) {
-    $pid = [int](Get-Content $pidFile -Raw)
-    if (Is-Running $pid) {
-      Stop-Process -Id $pid -Force
+    $gwPid = [int](Get-Content $pidFile -Raw)
+    if (Is-Running $gwPid) {
+      Stop-Process -Id $gwPid -Force
       Start-Sleep -Milliseconds 250
     }
     Remove-Item -Force $pidFile -ErrorAction SilentlyContinue
@@ -61,9 +61,9 @@ if ($Action -eq "stop") {
 
 # start
 if (Test-Path $pidFile) {
-  $pid = [int](Get-Content $pidFile -Raw)
-  if (Is-Running $pid) {
-    Write-Host "GATEWAY_STUB_ALREADY_RUNNING PID=$pid URL=$baseUrl"
+  $gwPid = [int](Get-Content $pidFile -Raw)
+  if (Is-Running $gwPid) {
+    Write-Host "GATEWAY_STUB_ALREADY_RUNNING PID=$gwPid URL=$baseUrl"
     exit 0
   } else {
     Remove-Item -Force $pidFile -ErrorAction SilentlyContinue
@@ -83,7 +83,7 @@ if (-not (Test-Path $serverPy)) {
 New-Item -ItemType File -Force $logOut | Out-Null
 New-Item -ItemType File -Force $logErr | Out-Null
 
-$env:HOST = $Host
+$env:HOST = $BindHost
 $env:PORT = "$Port"
 
 $p = Start-Process -FilePath $PythonExe `
@@ -105,3 +105,5 @@ if (-not (Wait-Health $baseUrl 12)) {
 Write-Host "GATEWAY_STUB_STARTED PID=$($p.Id) URL=$baseUrl"
 Write-Host "STDOUT_LOG=$logOut"
 Write-Host "STDERR_LOG=$logErr"
+
+
